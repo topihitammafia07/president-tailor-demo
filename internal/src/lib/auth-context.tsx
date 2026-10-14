@@ -68,9 +68,16 @@ export function AuthProvider({
           const parsed = JSON.parse(cached);
           setUser((prev) => prev || parsed);
           syncCookies(parsed);
+          refresh();
+          return;
         }
       } catch {
         // ignore JSON parse error
+      }
+      // On login page with no session, skip background getMe check to keep console clean
+      if (window.location.pathname.startsWith('/login')) {
+        setLoading(false);
+        return;
       }
     }
     refresh();
