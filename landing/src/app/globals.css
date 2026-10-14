@@ -1,0 +1,351 @@
+/* Luxury Tailoring Design System - President Tailor */
+/* Zero em dashes used in any text or comments */
+
+:root {
+  /* Palette - Luxury Tailoring */
+  --c-obsidian: #111215;
+  --c-charcoal: #1A1C22;
+  --c-slate: #282C37;
+  --c-card-dark: #1E212A;
+  
+  --c-ivory: #FAF8F5;
+  --c-creme: #F3EFE8;
+  --c-surface: #FFFFFF;
+  --c-border-light: #E5DFC0;
+  --c-border-subtle: #E8E3D9;
+  
+  --c-gold: #B89354;
+  --c-gold-hover: #A37F41;
+  --c-gold-light: #F7EFE1;
+  --c-gold-dark: #7D612E;
+  
+  --c-text-dark: #111215;
+  --c-text-dark-sub: #4A4F5C;
+  --c-text-dark-muted: #6E7484;
+  
+  --c-text-light: #F9F8F5;
+  --c-text-light-sub: #CACFD9;
+  --c-text-light-muted: #8E94A3;
+
+  /* Typography */
+  --font-serif: Georgia, Cambria, "Times New Roman", Times, serif;
+  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  
+  /* Radii */
+  --r-sm: 4px;
+  --r-md: 8px;
+  --r-lg: 14px;
+  
+  /* Shadows */
+  --shadow-subtle: 0 4px 20px -2px rgba(17, 18, 21, 0.05);
+  --shadow-card: 0 10px 30px -4px rgba(17, 18, 21, 0.08);
+  --shadow-gold: 0 8px 24px -4px rgba(184, 147, 84, 0.25);
+  
+  /* Transitions */
+  --transition-fast: 150ms cubic-bezier(0.16, 1, 0.3, 1);
+  --transition-smooth: 250ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 80px;
+}
+
+body {
+  background-color: var(--c-ivory);
+  color: var(--c-text-dark);
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 1.65;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Container */
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+}
+
+/* Section Rhythm */
+.section {
+  padding-top: 5.5rem;
+  padding-bottom: 5.5rem;
+  position: relative;
+}
+
+.section-dark {
+  background-color: var(--c-obsidian);
+  color: var(--c-text-light);
+}
+
+.section-creme {
+  background-color: var(--c-creme);
+}
+
+.section-white {
+  background-color: var(--c-surface);
+}
+
+/* Typography Helpers */
+.heading-serif {
+  font-family: var(--font-serif);
+  font-weight: normal;
+  letter-spacing: -0.01em;
+  line-height: 1.25;
+}
+
+.section-header {
+  text-align: center;
+  max-width: 760px;
+  margin: 0 auto 3.5rem auto;
+}
+
+.section-eyebrow {
+  display: inline-block;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--c-gold);
+  margin-bottom: 0.75rem;
+}
+
+.section-title {
+  font-size: 2.25rem;
+  color: inherit;
+  margin-bottom: 1rem;
+}
+
+.section-subtitle {
+  font-size: 1.0625rem;
+  line-height: 1.6;
+  opacity: 0.85;
+}
+
+/* Buttons and Tap Targets (Minimum 44px) */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.625rem;
+  min-height: 48px;
+  padding: 0.75rem 1.75rem;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-decoration: none;
+  border-radius: var(--r-sm);
+  cursor: pointer;
+  transition: all var(--transition-smooth);
+  border: 1px solid transparent;
+}
+
+.btn-primary {
+  background-color: var(--c-gold);
+  color: #FFFFFF;
+  box-shadow: var(--shadow-gold);
+}
+
+.btn-primary:hover {
+  background-color: var(--c-gold-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 28px -4px rgba(184, 147, 84, 0.35);
+}
+
+.btn-secondary {
+  background-color: transparent;
+  color: inherit;
+  border: 1px solid currentColor;
+}
+
+.btn-secondary:hover {
+  background-color: rgba(184, 147, 84, 0.1);
+  border-color: var(--c-gold);
+  color: var(--c-gold);
+}
+
+.btn-dark {
+  background-color: var(--c-obsidian);
+  color: #FFFFFF;
+}
+
+.btn-dark:hover {
+  background-color: var(--c-charcoal);
+  border-color: var(--c-gold);
+}
+
+/* Accessibility Focus Indicator */
+:focus-visible {
+  outline: 2px solid var(--c-gold);
+  outline-offset: 3px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .section {
+    padding-top: 4rem;
+    padding-bottom: 4rem;
+  }
+  
+  .section-title {
+    font-size: 1.75rem;
+  }
+  
+  .section-subtitle {
+    font-size: 0.9375rem;
+  }
+  
+  .container {
+    padding-left: 1.25rem;
+    padding-right: 1.25rem;
+  }
+}
+
+/* Reduced Motion Support */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Dedicated Navbar Classes */
+.navbar-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background-color: rgba(12, 22, 38, 0.98);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(197, 160, 89, 0.25);
+  height: 76px;
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.navbar-container {
+  width: 100%;
+  max-width: 1240px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 2rem;
+  padding-right: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.navbar-nav {
+  display: none;
+  align-items: center;
+  gap: 2.5rem;
+}
+
+.navbar-link {
+  color: #CBD5E1;
+  font-size: 0.9375rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  text-decoration: none;
+  padding: 0.5rem 0.85rem;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+  display: inline-block;
+}
+
+.navbar-link:hover {
+  color: #FFFFFF;
+  background-color: rgba(255, 255, 255, 0.06);
+}
+
+.navbar-cta {
+  display: none;
+  align-items: center;
+}
+
+.navbar-btn {
+  height: 42px;
+  padding: 0 1.35rem;
+  background-color: var(--c-gold);
+  color: #0C1626;
+  font-size: 0.875rem;
+  font-weight: 600;
+  border-radius: var(--r-sm);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  text-decoration: none;
+  white-space: nowrap;
+  box-shadow: 0 2px 8px rgba(212, 175, 55, 0.25);
+  transition: all 0.2s ease;
+  border: 1px solid transparent;
+}
+
+.navbar-btn:hover {
+  background-color: var(--c-gold-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(212, 175, 55, 0.35);
+}
+
+@media (min-width: 900px) {
+  .navbar-nav {
+    display: flex !important;
+  }
+  .navbar-cta {
+    display: flex !important;
+  }
+  .mobile-toggle {
+    display: none !important;
+  }
+}
+
+/* Floating WhatsApp Button */
+.wa-floating-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  min-width: 52px;
+  min-height: 52px;
+  padding: 0.75rem 1.25rem;
+  background-color: #25D366;
+  color: #FFFFFF;
+  border-radius: 9999px;
+  box-shadow: 0 8px 24px rgba(37, 211, 102, 0.35);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.9375rem;
+  transition: all 0.25s ease;
+}
+.wa-floating-btn:hover {
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 12px 28px rgba(37, 211, 102, 0.45);
+}
+@media (max-width: 640px) {
+  .wa-text {
+    display: none;
+  }
+  .wa-floating-btn {
+    padding: 0.75rem;
+    width: 52px;
+    height: 52px;
+    justify-content: center;
+  }
+}

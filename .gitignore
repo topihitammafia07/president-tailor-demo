@@ -1,0 +1,22 @@
+# Environment / secrets
+**/.env
+**/.env.*
+!**/.env.example
+!**/.env.testing.example
+# Node
+**/node_modules/
+**/.next/
+**/out/
+**/coverage/
+**/*.tsbuildinfo
+# PHP / Laravel
+api/vendor/
+api/storage/logs/*
+api/bootstrap/cache/*.php
+# Editor / OS
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/.history/
+# Misc
+*.log
