@@ -19,20 +19,25 @@ return [
 
     'allowed_methods' => ['*'],
 
-    'allowed_origins' => array_filter([
+    'allowed_origins' => array_filter(array_map(function ($url) {
+        return rtrim(trim($url, " '\""), '/');
+    }, [
         env('FRONTEND_URL', 'http://localhost:3000'),
         env('INTERNAL_FRONTEND_URL', 'http://localhost:3001'),
         'http://127.0.0.1:3000',
         'http://127.0.0.1:3001',
-    ]),
+    ])),
 
-    'allowed_origins_patterns' => [],
+    'allowed_origins_patterns' => [
+        '#^https?://.*\.vercel\.app$#',
+        '#^https?://.*\.railway\.app$#',
+    ],
 
     'allowed_headers' => ['*'],
 
-    'exposed_headers' => [],
+    'exposed_headers' => ['*'],
 
-    'max_age' => 0,
+    'max_age' => 86400,
 
     'supports_credentials' => true,
 
