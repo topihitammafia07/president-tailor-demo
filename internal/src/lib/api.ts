@@ -273,6 +273,19 @@ class ApiClient {
   async getServiceTypes(): Promise<{ data: ServiceType[] }> {
     return this.request<{ data: ServiceType[] }>('/api/v1/service-types');
   }
+
+  // Demo Data Management (Owner)
+  async seedDemoData(): Promise<{ message: string }> {
+    return this.request<{ message: string }>('/api/v1/owner/seed-demo', {
+      method: 'POST',
+    });
+  }
+
+  async resetDemoData(): Promise<{ message: string }> {
+    return this.request<{ message: string }>('/api/v1/owner/reset-demo', {
+      method: 'POST',
+    });
+  }
 }
 
 export const api = new ApiClient();

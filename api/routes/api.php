@@ -30,5 +30,7 @@ Route::prefix('v1')->middleware('auth:sanctum')->group(function () {
     Route::prefix('owner')->middleware(EnsureUserIsOwner::class)->group(function () {
         Route::get('/dashboard', [OwnerReportController::class, 'dashboard']);
         Route::get('/reports', [OwnerReportController::class, 'reports']);
+        Route::post('/seed-demo', [OwnerReportController::class, 'seedDemo']);
+        Route::post('/reset-demo', [OwnerReportController::class, 'resetDemo']);
     });
 });

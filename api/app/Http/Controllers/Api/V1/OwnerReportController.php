@@ -240,4 +240,28 @@ class OwnerReportController extends Controller
 
         return $trends;
     }
+
+    /**
+     * Seed realistic demo data for dashboard simulation.
+     */
+    public function seedDemo(): JsonResponse
+    {
+        (new \Database\Seeders\DemoDataSeeder)->run();
+
+        return response()->json([
+            'message' => 'Data demo berhasil dimuat.',
+        ]);
+    }
+
+    /**
+     * Clear all demo data so workshop can start fresh with real orders.
+     */
+    public function resetDemo(): JsonResponse
+    {
+        \Database\Seeders\DemoDataSeeder::reset();
+
+        return response()->json([
+            'message' => 'Data demo berhasil direset.',
+        ]);
+    }
 }

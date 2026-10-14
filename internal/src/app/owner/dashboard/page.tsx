@@ -22,6 +22,8 @@ import {
   DollarSign,
   ArrowRight,
   Info,
+  Sparkles,
+  RotateCcw,
 } from 'lucide-react';
 
 export default function OwnerDashboardPage() {
@@ -68,6 +70,43 @@ export default function OwnerDashboardPage() {
     setStartDate('');
     setEndDate('');
     fetchDashboard();
+  };
+
+  // Demo data state & actions
+  const [demoLoading, setDemoLoading] = useState(false);
+  const [demoMessage, setDemoMessage] = useState<string | null>(null);
+
+  const handleSeedDemo = async () => {
+    setDemoLoading(true);
+    setDemoMessage(null);
+    try {
+      const res = await api.seedDemoData();
+      setDemoMessage(res.message || 'Data demo berhasil dimuat.');
+      await fetchDashboard(startDate || undefined, endDate || undefined);
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : 'Gagal memuat data demo.';
+      setError(msg);
+    } finally {
+      setDemoLoading(false);
+    }
+  };
+
+  const handleResetDemo = async () => {
+    if (typeof window !== 'undefined' && !window.confirm('Apakah Anda yakin ingin mereset seluruh data pesanan & pelanggan demo? Tindakan ini akan mengosongkan transaksi agar siap digunakan untuk pesanan riil.')) {
+      return;
+    }
+    setDemoLoading(true);
+    setDemoMessage(null);
+    try {
+      const res = await api.resetDemoData();
+      setDemoMessage(res.message || 'Data demo berhasil direset.');
+      await fetchDashboard(startDate || undefined, endDate || undefined);
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : 'Gagal mereset data demo.';
+      setError(msg);
+    } finally {
+      setDemoLoading(false);
+    }
   };
 
   const formatRupiah = (val: number) => {
@@ -143,13 +182,81 @@ export default function OwnerDashboardPage() {
             </p>
           </div>
 
-          <div style={{ display: 'flex', gap: '0.75rem' }}>
+          <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center', flexWrap: 'wrap' }}>
+            {m.total_orders === 0 ? (
+              <Button
+                variant="primary"
+                onClick={handleSeedDemo}
+                loading={demoLoading}
+                style={{ display: 'inline-flex', alignItems: 'center', gap: '0.45rem' }}
+              >
+                <Sparkles size={16} />
+                <span>Muat Data Demo</span>
+              </Button>
+            ) : (
+              <Button
+                variant="secondary"
+                onClick={handleResetDemo}
+                loading={demoLoading}
+                title="Hapus data pesanan demo untuk memulai pencatatan riil"
+                style={{ display: 'inline-flex', alignItems: 'center', gap: '0.45rem', fontSize: '0.85rem' }}
+              >
+                <RotateCcw size={15} />
+                <span>Reset Demo</span>
+              </Button>
+            )}
             <Button variant="secondary" onClick={() => router.push('/owner/laporan')} style={{ display: 'inline-flex', alignItems: 'center', gap: '0.45rem' }}>
               <FileText size={16} />
               <span>Buka Laporan Lengkap</span>
             </Button>
           </div>
         </div>
+
+        {/* Demo Message Banner */}
+        {demoMessage && (
+          <div style={{
+            padding: '0.85rem 1.15rem',
+            backgroundColor: '#ECFDF5',
+            color: '#065F46',
+            borderRadius: 'var(--radius-sm)',
+            border: '1px solid #A7F3D0',
+            fontSize: '0.875rem',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '0.6rem',
+          }}>
+            <CheckCircle2 size={18} color="#059669" />
+            <span style={{ fontWeight: 500 }}>{demoMessage}</span>
+          </div>
+        )}
+
+        {/* Empty State Callout when total orders is 0 */}
+        {m.total_orders === 0 && (
+          <Card style={{ padding: '1.5rem', backgroundColor: '#F8FAFC', border: '1px dashed #CBD5E1' }}>
+            <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', alignItems: 'center', gap: '1rem' }}>
+              <div style={{ maxWidth: '650px' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.35rem' }}>
+                  <Sparkles size={18} color="var(--primary)" />
+                  <span style={{ fontWeight: 700, fontSize: '1rem', color: 'var(--text-primary)' }}>
+                    Database Masih Bersih (Belum Ada Transaksi)
+                  </span>
+                </div>
+                <p style={{ margin: 0, fontSize: '0.875rem', color: 'var(--text-secondary)', lineHeight: 1.5 }}>
+                  Belum ada pesanan yang tercatat di database live. Untuk melihat simulasi visual grafik omzet, realisasi kas, dan sebaran 3 jenis layanan (Jas, Hem Batik, Celana Panjang), klik tombol di samping untuk memuat data demo realistis.
+                </p>
+              </div>
+              <Button
+                variant="primary"
+                onClick={handleSeedDemo}
+                loading={demoLoading}
+                style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem' }}
+              >
+                <Sparkles size={16} />
+                <span>Muat Data Demo Sekarang</span>
+              </Button>
+            </div>
+          </Card>
+        )}
 
         {/* Date Filter Card */}
         <Card style={{ padding: '1rem 1.25rem' }}>
