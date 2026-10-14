@@ -35,7 +35,12 @@ return [
 
     'allowed_headers' => ['*'],
 
-    'exposed_headers' => ['*'],
+    'exposed_headers' => [
+        'X-CSRF-TOKEN',
+        'x-csrf-token',
+        'X-XSRF-TOKEN',
+        'x-xsrf-token',
+    ],
 
     'max_age' => 86400,
 

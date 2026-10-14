@@ -27,6 +27,11 @@ class ApiClient {
       const headerToken = res.headers.get('X-CSRF-TOKEN') || res.headers.get('x-csrf-token');
       if (headerToken) {
         this.csrfToken = headerToken;
+      } else {
+        const body = (await res.json().catch(() => null)) as { csrf_token?: string } | null;
+        if (body?.csrf_token) {
+          this.csrfToken = body.csrf_token;
+        }
       }
       this.csrfInitialized = true;
     } catch {
@@ -35,7 +40,6 @@ class ApiClient {
   }
 
   private getCsrfTokenFromCookie(): string | null {
-    if (this.csrfToken) return this.csrfToken;
     if (typeof document === 'undefined') return null;
     const match = document.cookie.match(/XSRF-TOKEN=([^;]+)/);
     return match ? decodeURIComponent(match[1]) : null;
@@ -59,9 +63,14 @@ class ApiClient {
       ...(options.headers as Record<string, string>),
     };
 
-    const token = this.getCsrfTokenFromCookie();
-    if (token && isMutation) {
-      headers['X-XSRF-TOKEN'] = token;
+    if (isMutation) {
+      if (this.csrfToken) {
+        headers['X-CSRF-TOKEN'] = this.csrfToken;
+      }
+      const cookieToken = this.getCsrfTokenFromCookie();
+      if (cookieToken) {
+        headers['X-XSRF-TOKEN'] = cookieToken;
+      }
     }
 
     const res = await fetch(`${API_BASE_URL}${endpoint}`, {
@@ -96,14 +105,21 @@ class ApiClient {
 
   // Auth
   async login(email: string, password: string): Promise<{ message: string; user: User }> {
-    this.csrfInitialized = false; // reset csrf on new login attempt
-    return this.request<{ message: string; user: User }>('/login', {
+    this.csrfInitialized = false;
+    this.csrfToken = null;
+    const res = await this.request<{ message: string; user: User; csrf_token?: string }>('/login', {
       method: 'POST',
       body: JSON.stringify({ email, password }),
     });
+    if (res.csrf_token) {
+      this.csrfToken = res.csrf_token;
+    }
+    return res;
   }
 
   async logout(): Promise<{ message: string }> {
+    this.csrfToken = null;
+    this.csrfInitialized = false;
     return this.request<{ message: string }>('/logout', {
       method: 'POST',
     });

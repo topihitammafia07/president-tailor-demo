@@ -11,8 +11,11 @@ Route::get('/', function () {
 });
 
 Route::get('/sanctum/csrf-cookie', function () {
-    return response()->noContent()
-        ->header('X-CSRF-TOKEN', csrf_token());
+    $token = csrf_token();
+
+    return response()->json([
+        'csrf_token' => $token,
+    ])->header('X-CSRF-TOKEN', $token);
 })->middleware('web');
 
 Route::post('/login', [AuthController::class, 'login'])->middleware('web')->name('login');

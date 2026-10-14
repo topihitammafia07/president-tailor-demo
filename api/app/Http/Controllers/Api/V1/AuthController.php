@@ -39,13 +39,14 @@ class AuthController extends Controller
 
         return response()->json([
             'message' => 'Login berhasil.',
+            'csrf_token' => csrf_token(),
             'user' => [
                 'id' => $user->id,
                 'name' => $user->name,
                 'email' => $user->email,
                 'role' => $user->role,
             ],
-        ]);
+        ])->header('X-CSRF-TOKEN', csrf_token());
     }
 
     /**
