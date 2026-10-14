@@ -15,14 +15,19 @@ const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
 
 class ApiClient {
   private csrfInitialized = false;
+  private csrfToken: string | null = null;
 
   private async ensureCsrf(): Promise<void> {
-    if (this.csrfInitialized) return;
+    if (this.csrfInitialized && this.csrfToken) return;
     try {
-      await fetch(`${API_BASE_URL}/sanctum/csrf-cookie`, {
+      const res = await fetch(`${API_BASE_URL}/sanctum/csrf-cookie`, {
         method: 'GET',
         credentials: 'include',
       });
+      const headerToken = res.headers.get('X-CSRF-TOKEN') || res.headers.get('x-csrf-token');
+      if (headerToken) {
+        this.csrfToken = headerToken;
+      }
       this.csrfInitialized = true;
     } catch {
       // Allow request attempt even if csrf cookie pre-fetch fails
@@ -30,6 +35,7 @@ class ApiClient {
   }
 
   private getCsrfTokenFromCookie(): string | null {
+    if (this.csrfToken) return this.csrfToken;
     if (typeof document === 'undefined') return null;
     const match = document.cookie.match(/XSRF-TOKEN=([^;]+)/);
     return match ? decodeURIComponent(match[1]) : null;

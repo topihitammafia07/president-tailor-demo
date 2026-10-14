@@ -10,6 +10,11 @@ Route::get('/', function () {
     ]);
 });
 
+Route::get('/sanctum/csrf-cookie', function () {
+    return response()->noContent()
+        ->header('X-CSRF-TOKEN', csrf_token());
+})->middleware('web');
+
 Route::post('/login', [AuthController::class, 'login'])->middleware('web')->name('login');
 Route::post('/logout', [AuthController::class, 'logout'])->middleware('web');
 Route::post('/api/v1/login', [AuthController::class, 'login'])->middleware('web');
